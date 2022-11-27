@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @KeycloakConfiguration
 public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
+    String[] ROLES = {"Employer", "Employee"};
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
@@ -31,7 +33,6 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
-    //use below code for application.properties instead of WEB-INF/keycloack.json
     @Bean
     public KeycloakConfigResolver KeycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
@@ -43,9 +44,9 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
         super.configure(http);
         http.authorizeRequests()
-                .antMatchers("/hello").permitAll()
                 .antMatchers("/employer/goals*").hasRole("Employer")
                 .antMatchers("/employee/goals*").hasRole("Employee")
+                .antMatchers("/users/**").hasAnyRole(ROLES)
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedPage("/access-denied-response");
     }

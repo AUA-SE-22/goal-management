@@ -1,4 +1,4 @@
-package com.datauser.goalmanagement.model;
+package com.datauser.goalmanagement.model.goals;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 

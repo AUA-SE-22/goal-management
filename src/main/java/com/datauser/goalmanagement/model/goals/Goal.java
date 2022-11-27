@@ -1,4 +1,4 @@
-package com.datauser.goalmanagement.model;
+package com.datauser.goalmanagement.model.goals;
 
 import com.datauser.goalmanagement.utils.Status;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,40 +25,66 @@ public class Goal implements Serializable {
     @Column(name = "detail", nullable = false)
     private String detail;
 
-    @Column(name = "employee_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "employeeId", nullable = false, insertable = false, updatable = false)
     private Long employeeId;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creationDate", nullable = false)
     private Date creationDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @Column(name = "employer_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "employerId", nullable = false, insertable = false, updatable = false)
     private Long employerId;
 
-    @Column(name = "approve_date")
+    @Column(name = "approveDate")
     private Date approveDate;
 
-    @Column(name = "reject_date")
+    @Column(name = "rejectDate")
     private Date rejectDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employeeId")
     @JsonManagedReference
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employer_id")
+    @JoinColumn(name = "employerId")
     @JsonManagedReference
     private Employer employer;
 
     public Goal() {
     }
 
-    public Goal(Long id, String detail, Long employeeId, Date creationDate, Status status, Long employerId,
-                Date approveDate, Date rejectDate, Employee employee, Employer employer) {
+    public Goal(Long id,
+                String detail,
+                Long employeeId,
+                Date creationDate,
+                Status status,
+                Long employerId,
+                Date approveDate,
+                Date rejectDate) {
         this.id = id;
+        this.detail = detail;
+        this.employeeId = employeeId;
+        this.creationDate = creationDate;
+        this.status = status;
+        this.employerId = employerId;
+        this.approveDate = approveDate;
+        this.rejectDate = rejectDate;
+    }
+
+    public Goal(String name,
+                String detail,
+                Long employeeId,
+                Date creationDate,
+                Status status,
+                Long employerId,
+                Date approveDate,
+                Date rejectDate
+                ) {
+        this.name = name;
         this.detail = detail;
         this.employeeId = employeeId;
         this.creationDate = creationDate;
@@ -76,6 +102,14 @@ public class Goal implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDetail() {
@@ -155,13 +189,14 @@ public class Goal implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goal goal = (Goal) o;
-        return id.equals(goal.id) && detail.equals(goal.detail) && employeeId.equals(goal.employeeId) &&
-                creationDate.equals(goal.creationDate) && status == goal.status && employerId.equals(goal.employerId) &&
+        return id.equals(goal.id) && name.equals(goal.name) && detail.equals(goal.detail) &&
+                employeeId.equals(goal.employeeId) && creationDate.equals(goal.creationDate) &&
+                status == goal.status && employerId.equals(goal.employerId) &&
                 Objects.equals(approveDate, goal.approveDate) && Objects.equals(rejectDate, goal.rejectDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, detail, employeeId, creationDate, status, employerId, approveDate, rejectDate);
+        return Objects.hash(id, name, detail, employeeId, creationDate, status, employerId, approveDate, rejectDate);
     }
 }

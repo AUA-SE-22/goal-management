@@ -1,4 +1,4 @@
-package com.datauser.goalmanagement.utils;
+package com.datauser.goalmanagement.services;
 
 import org.springframework.stereotype.Service;
 

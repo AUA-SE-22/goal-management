@@ -1,3 +1,4 @@
+USE goal_management;
 -- ------------------------------------------------------------------------
 -- Table `employee`
 -- ------------------------------------------------------------------------
@@ -38,19 +39,17 @@ CREATE TABLE `goal`
     `id`            INT          NOT NULL AUTO_INCREMENT,
     `name`          VARCHAR(128) NOT NULL,
     `detail`        VARCHAR(500) NOT NULL,
-    `employee_id`   INT          NOT NULL,
-    `creation_date` DATE         NOT NULL,
+    `employeeId`   INT          NOT NULL,
+    `creationDate` DATE         NOT NULL,
     `status`        enum('ACCEPTED', 'PENDING', 'REJECTED' ) NOT NULL,
-    `employer_id`   INT          NOT NULL,
-    `approve_date`  DATE         NOT NULL,
-    `reject_date`   DATE         NOT NULL,
+    `employerId`   INT          NOT NULL,
+    `approveDate`  DATE,
+    `rejectDate`   DATE,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_GOAL_employee`
-        FOREIGN KEY (`employee_id`)
+        FOREIGN KEY (`employeeId`)
             REFERENCES `employee` (`id`),
     CONSTRAINT `fk_goal_employer`
-        FOREIGN KEY (`employer_id`)
+        FOREIGN KEY (`employerId`)
             REFERENCES `employer` (`id`)
 );
-CREATE INDEX fk_GOAL_employee_idx ON goal (employee_id ASC );
-CREATE INDEX fk_GOAL_employer_idx ON goal (employer_id ASC );

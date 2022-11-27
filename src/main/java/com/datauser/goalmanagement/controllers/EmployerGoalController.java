@@ -1,6 +1,6 @@
 package com.datauser.goalmanagement.controllers;
 
-import com.datauser.goalmanagement.utils.UtilityService;
+import com.datauser.goalmanagement.services.UtilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("employer/goals")
-public class EmployerGoalsController {
+public class EmployerGoalController {
 
     private static boolean isDatabaseUpdated = false;
 
@@ -21,7 +21,7 @@ public class EmployerGoalsController {
     private final UtilityService utilityService;
 
     @Autowired
-    public EmployerGoalsController(HttpServletRequest httpServletRequest, UtilityService utilityService) {
+    public EmployerGoalController(HttpServletRequest httpServletRequest, UtilityService utilityService) {
         this.httpServletRequest = httpServletRequest;
         this.utilityService = utilityService;
     }

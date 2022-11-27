@@ -2,6 +2,20 @@ version: '3.9'
 
 services:
 
+  mysql-db:
+    image: mysql:8.0.27
+    ports:
+      - "3326:3306"
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: goal_management
+      # Self-Explanatory
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - keycloak-and-mysql-network
+
   mysql-kc:
     image: mysql:8.0.27
     ports:

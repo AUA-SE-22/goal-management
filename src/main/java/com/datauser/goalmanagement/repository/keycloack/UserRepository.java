@@ -1,4 +1,4 @@
-package com.datauser.goalmanagement.repository.keyckloack;
+package com.datauser.goalmanagement.repository.keycloack;
 
 import com.datauser.goalmanagement.model.keycloak.User;
 import org.springframework.data.jpa.repository.JpaRepository;
