@@ -13,6 +13,8 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoalDto {
+    private Long id;
+
     private String name;
 
     private String detail;
@@ -23,7 +25,7 @@ public class GoalDto {
 
     private Status status;
 
-    private Long employerId;
+    private String employerId;
 
     private Date approveDate;
 

@@ -12,7 +12,6 @@ public interface GoalMapper {
 
     GoalDto goalToGoalDto(Goal goal);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "employee", ignore = true)
     @Mapping(target = "employer", ignore = true)
     Goal goalDtoToGoal(GoalDto goalDto);

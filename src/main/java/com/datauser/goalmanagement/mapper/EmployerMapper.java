@@ -13,7 +13,7 @@ public interface EmployerMapper {
     @Mapping(target = "role", ignore = true)
     EmployerDto employerToEmployerDto(Employer employer);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "goals", ignore = true)
+    @Mapping(target = "keycloakId", ignore = true)
     Employer employerDtoToEmployer(EmployerDto employerDto);
 }

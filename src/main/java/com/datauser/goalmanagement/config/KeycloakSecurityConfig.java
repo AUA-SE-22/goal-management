@@ -43,10 +43,11 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
 
         super.configure(http);
-        http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers("/employer/goals*").hasRole("Employer")
                 .antMatchers("/employee/goals*").hasRole("Employee")
                 .antMatchers("/users/**").hasAnyRole(ROLES)
+                .antMatchers("/goals/**").hasAnyRole(ROLES)
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedPage("/access-denied-response");
     }

@@ -36,13 +36,13 @@ CREATE TABLE `employer`
 DROP TABLE IF EXISTS `goal`;
 CREATE TABLE `goal`
 (
-    `id`            INT          NOT NULL AUTO_INCREMENT,
-    `name`          VARCHAR(128) NOT NULL,
-    `detail`        VARCHAR(500) NOT NULL,
-    `employeeId`   INT          NOT NULL,
-    `creationDate` DATE         NOT NULL,
-    `status`        enum('ACCEPTED', 'PENDING', 'REJECTED' ) NOT NULL,
-    `employerId`   INT          NOT NULL,
+    `id`           INT                                       NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(128)                              NOT NULL,
+    `detail`       VARCHAR(500)                              NOT NULL,
+    `employeeId`   INT                                       NOT NULL,
+    `creationDate` DATE                                      NOT NULL,
+    `status`       enum ('ACCEPTED', 'PENDING', 'REJECTED' ) NOT NULL,
+    `employerId`   INT                                       NOT NULL,
     `approveDate`  DATE,
     `rejectDate`   DATE,
     PRIMARY KEY (`id`),

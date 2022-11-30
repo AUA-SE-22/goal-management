@@ -1,24 +1,48 @@
 # Backend application for goal-management-ui with SSO Keycloak
-
+## Authentication:
+## Token generation: POST { 
+                            "url": "http://localhost:8181/auth/realms/goal-management/protocol/openid-connect/token",
+                            "body": x-www-form-urlencoded
+                                    {
+                                        "client_id": "login-app",
+                                        "client_secret":"mCGzxRMDNLEZKcqZ1i094BwkZKvgrOfF"
+                                        "username":"hovhannesc| anim" # ROLE: employer|employee
+                                        "password":"hovhannes_p| ani_p" # ROLE: employer|employee
+                                        "grant_type":"password"
+                                    }
+                            }
 ## Endpoints:
-1. Get All Employees: 		http://localhost:8081/users/employees
-2. Get All Employers: 		http://localhost:8081/users/employers
+### ROLE: {EMPLOYEE, EMPLOYER}
+    - GET http://localhost:8081/users/employees
+    - GET http://localhost:8081/users/employers
+    - GET http://localhost:8081/users/employees/{id}
+    - GET http://localhost:8081/users/employers/{id}
+    - GET http://localhost:8081/goals/{id}
+    
 
-
-3. Get All EmployeeGoals:  	http://localhost:8081/employee/goals
-4. Post Create goal:        http://localhost:8081/employee/goals || body :
-                                   {	"name" : "Not null", 
-                                        "detail" : "Not null",   
-										"employerId": "Not null", 
-								   }
-5. Post Edit goal:         	http://localhost:8081/employee/goals/id || body:
-                                      { "name" : "Not null", 
-                                        "detail" : "Not null", 
-                                      }
-											
-																					
-6. Get All EmployerGoals:  	http://localhost:8081/employer/goals
-7. Post Employer update status: http://localhost:8081/employer/goals/id || body {"status": "ACCEPTED,PENDING, REJECTED"}
-
-8. Get goal by goalId: http://localhost:8081/goals/id
+### ROLE: EMPLOYEE
+    - GET http://localhost:8081/employee/goals
+    - POST {
+            url : "http://localhost:8081/employee/goals"
+            body: {
+                    "name": "",
+                    "detail": "",
+                    "employerId": "",
+                    }
+            }
+    - PUT {
+            url: http://localhost:8081/employee/goals/{id}
+            body: {
+                    "name": "",
+                    "detail": ""
+                    }
+            }	
+### ROLE: EMPLOYER
+        - GET http://localhost:8081/employer/goals
+        - PUT {
+            url: http://localhost:8081/employer/goals/{id}
+            body: {
+                    "status": "ACCEPTED|REJECTED",
+                    }
+            }	
 

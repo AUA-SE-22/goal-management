@@ -3,9 +3,12 @@ package com.datauser.goalmanagement.controllers;
 import com.datauser.goalmanagement.dto.GoalDto;
 import com.datauser.goalmanagement.dto.OperationalMessage;
 import com.datauser.goalmanagement.model.goals.Employee;
+import com.datauser.goalmanagement.payload.request.EmployeeGoalCreateRequest;
+import com.datauser.goalmanagement.payload.request.EmployeeGoalUpdateRequest;
 import com.datauser.goalmanagement.services.GoalService;
 import com.datauser.goalmanagement.services.UserService;
 import com.datauser.goalmanagement.services.UtilityService;
+import com.datauser.goalmanagement.services.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,10 +20,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("employee/goals")
+@RequestMapping("/employee/goals")
 public class EmployeeGoalController {
 
     private final UserService userService;
@@ -30,17 +34,18 @@ public class EmployeeGoalController {
 
     private final UtilityService utilityService;
 
+    private final ValidationService validationService;
+
     @Autowired
     public EmployeeGoalController(UserService userService,
                                   GoalService goalService,
                                   HttpServletRequest httpServletRequest,
-                                  UtilityService utilityService) {
+                                  UtilityService utilityService, ValidationService validationService) {
         this.userService = userService;
         this.goalService = goalService;
         this.httpServletRequest = httpServletRequest;
         this.utilityService = utilityService;
-
-
+        this.validationService = validationService;
     }
 
     @GetMapping
@@ -52,7 +57,7 @@ public class EmployeeGoalController {
         log.info(">> EmployeeGoalsController.getAll enter");
         try {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
-            Employee employee =this.userService.findEmployeeById(keyCloakUserId);
+            Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
 
             if (page < 0) {
                 page = 0;
@@ -76,16 +81,50 @@ public class EmployeeGoalController {
         }
     }
 
-    public ResponseEntity<?> create(@RequestBody GoalDto goalDto) {
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody EmployeeGoalCreateRequest request) {
         log.info(">> EmployeeGoalsController.create enter");
         try {
-            String validationKey = goalService.validate(goalDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+            String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
+            Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
+            Page<GoalDto> goalDtosPage = this.goalService.getAllEmployeeGoals(employee.getId(), PageRequest.of(0, Integer.MAX_VALUE));
+            List<GoalDto> goalDtos = goalDtosPage.getContent();
+            if (goalDtos.size() > 10) {
+                log.error("<< EmployeeGoalsController.create exit FAIL: `{}` employee has more than 10 goal", employee.getFirstName() + " " + employee.getLastName());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage("Not more than 11 goals is allowed"));
+            }
+            String validationKey = goalService.validateEmployeeGoalRequest(request);
+            if (!validationKey.equals("")) {
+                log.error("<< EmployeeGoalsController.create exit FAIL: {}", validationKey);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage(validationKey));
+            }
+            GoalDto goalDto = this.goalService.createEmployeeGoal(request, employee);
+            return ResponseEntity.status(HttpStatus.CREATED).body(goalDto);
         } catch (Exception e) {
-            log.error(">> EmployeeGoalsController.create enter");
+            log.error("<< EmployeeGoalsController.create exit FAIL");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage(e.getMessage()));
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, EmployeeGoalUpdateRequest request) {
+        log.info(">> EmployeeGoalsController.update enter");
+        try {
+            String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
+            Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
+            GoalDto goalDto = this.goalService.updateEmployeeGoal(id, request);
+            if (goalDto == null) {
+                log.error("<< EmployeeGoalsController.create exit FAIL");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new OperationalMessage("Goal with id: " + id + " not found"));
+            }
+            log.info("<< EmployeeGoalsController.update exit");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(goalDto);
+        } catch (Exception e) {
+            log.error("<< EmployeeGoalsController.create exit FAIL");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage(e.getMessage()));
+        }
 
+    }
 }

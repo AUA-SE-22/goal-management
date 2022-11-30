@@ -3,20 +3,15 @@ package com.datauser.goalmanagement.services;
 import com.datauser.goalmanagement.utils.Status;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-
 @Service
 public class ValidationService {
 
     private static final String GOAL_NAME_MANDATORY = "Please file the target name of goal";
     private static final String GOAL_DETAIL_MANDATORY = "Please file the detail of goal";
-    private static final String GOAL_EMPLOYEE_MANDATORY = "Please file the employeeId of goal";
+    private static final String GOAL_EMPLOYEE_MANDATORY = "Please file the employeeName of goal";
     private static final String GOAL_STATUS_MANDATORY = "Please file the status of goal";
 
     private static final String INVALID_GOAL_STATUS = "Given status is invalid";
-
-
-    private static final String GOAL_CREATION_DATE_MANDATORY = "Please file the creation date of goal";
     private static final String GOAL_EMPLOYER_MANDATORY = "Please file the employerId of goal";
 
     public String checkName(String name) {
@@ -70,15 +65,6 @@ public class ValidationService {
         return errorKey;
     }
 
-
-
-    public String checkCreationDate(Date creationDate) {
-        String errorKey = "";
-        if (creationDate == null) {
-            errorKey = GOAL_CREATION_DATE_MANDATORY;
-        }
-        return errorKey;
-    }
     private boolean isValidStatus(String statusString) {
         for (Status status: Status.values()) {
             if (status.name().equals(statusString)) {

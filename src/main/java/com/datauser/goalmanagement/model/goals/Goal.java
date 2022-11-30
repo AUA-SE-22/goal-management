@@ -20,12 +20,12 @@ public class Goal implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "detail", nullable = false)
     private String detail;
 
-    @Column(name = "employeeId", nullable = false, insertable = false, updatable = false)
+    @Column(name = "employeeId", nullable = false)
     private Long employeeId;
 
     @Column(name = "creationDate", nullable = false)
@@ -35,7 +35,7 @@ public class Goal implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @Column(name = "employerId", nullable = false, insertable = false, updatable = false)
+    @Column(name = "employerId", nullable = false)
     private Long employerId;
 
     @Column(name = "approveDate")
@@ -45,12 +45,12 @@ public class Goal implements Serializable {
     private Date rejectDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employeeId")
+    @JoinColumn(name = "employeeId", insertable = false, updatable = false)
     @JsonManagedReference
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employerId")
+    @JoinColumn(name = "employerId", insertable = false, updatable = false)
     @JsonManagedReference
     private Employer employer;
 
@@ -92,8 +92,6 @@ public class Goal implements Serializable {
         this.employerId = employerId;
         this.approveDate = approveDate;
         this.rejectDate = rejectDate;
-        this.employee = employee;
-        this.employer = employer;
     }
 
     public Long getId() {

@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class EmployerDto {
-    private String keycloakId;
+
+    private Long id;
 
     private String firstName;
 
