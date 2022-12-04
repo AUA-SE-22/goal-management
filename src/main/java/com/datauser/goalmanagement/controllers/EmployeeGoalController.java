@@ -112,7 +112,7 @@ public class EmployeeGoalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, EmployeeGoalUpdateRequest request) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody EmployeeGoalUpdateRequest request) {
         log.info(">> EmployeeGoalsController.update enter");
         try {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
