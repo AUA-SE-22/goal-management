@@ -88,6 +88,10 @@ public class EmployeeGoalController {
         try {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
             Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
+            var employersList = userService.getAllEmployer();
+            if (employersList.isEmpty()) {
+                log.error("<< EmployeeGoalsController.create exit FAIL: No Employer found");
+            }
             Page<GoalDto> goalDtosPage = this.goalService.getAllEmployeeGoals(employee.getId(), PageRequest.of(0, Integer.MAX_VALUE));
             List<GoalDto> goalDtos = goalDtosPage.getContent();
             if (goalDtos.size() > 10) {
@@ -114,6 +118,7 @@ public class EmployeeGoalController {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
             Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
             GoalDto goalDto = this.goalService.updateEmployeeGoal(id, request);
+            log.error(goalDto.toString());
             if (goalDto == null) {
                 log.error("<< EmployeeGoalsController.create exit FAIL");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -122,7 +127,7 @@ public class EmployeeGoalController {
             log.info("<< EmployeeGoalsController.update exit");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(goalDto);
         } catch (Exception e) {
-            log.error("<< EmployeeGoalsController.create exit FAIL");
+            log.error("<< EmployeeGoalsController.update exit FAIL");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage(e.getMessage()));
         }
 
