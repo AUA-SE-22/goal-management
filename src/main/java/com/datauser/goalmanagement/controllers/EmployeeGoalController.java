@@ -112,12 +112,13 @@ public class EmployeeGoalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, EmployeeGoalUpdateRequest request) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody EmployeeGoalUpdateRequest request) {
         log.info(">> EmployeeGoalsController.update enter");
         try {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
             Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
             GoalDto goalDto = this.goalService.updateEmployeeGoal(id, request);
+            log.error(goalDto.toString());
             if (goalDto == null) {
                 log.error("<< EmployeeGoalsController.create exit FAIL");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -126,7 +127,7 @@ public class EmployeeGoalController {
             log.info("<< EmployeeGoalsController.update exit");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(goalDto);
         } catch (Exception e) {
-            log.error("<< EmployeeGoalsController.create exit FAIL");
+            log.error("<< EmployeeGoalsController.update exit FAIL");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OperationalMessage(e.getMessage()));
         }
 
