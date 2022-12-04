@@ -88,6 +88,10 @@ public class EmployeeGoalController {
         try {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
             Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
+            var employersList = userService.getAllEmployer();
+            if (employersList.isEmpty()) {
+                log.error("<< EmployeeGoalsController.create exit FAIL: No Employer found");
+            }
             Page<GoalDto> goalDtosPage = this.goalService.getAllEmployeeGoals(employee.getId(), PageRequest.of(0, Integer.MAX_VALUE));
             List<GoalDto> goalDtos = goalDtosPage.getContent();
             if (goalDtos.size() > 10) {
