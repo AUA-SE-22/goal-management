@@ -25,6 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/employee/goals")
+@CrossOrigin(origins = "*")
 public class EmployeeGoalController {
 
     private final UserService userService;
