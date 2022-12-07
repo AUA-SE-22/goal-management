@@ -25,6 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/employee/goals")
+@CrossOrigin(origins = "*")
 public class EmployeeGoalController {
 
     private final UserService userService;
@@ -118,7 +119,6 @@ public class EmployeeGoalController {
             String keyCloakUserId = this.utilityService.getUserData(this.httpServletRequest);
             Employee employee =this.userService.findEmployeeByKeyCloakId(keyCloakUserId);
             GoalDto goalDto = this.goalService.updateEmployeeGoal(id, request);
-            log.error(goalDto.toString());
             if (goalDto == null) {
                 log.error("<< EmployeeGoalsController.create exit FAIL");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

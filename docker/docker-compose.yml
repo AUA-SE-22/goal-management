@@ -66,23 +66,6 @@ services:
     networks:
       - keycloak-and-mysql-network
 
-  goal-management:
-    container_name: goal-management
-    build: .
-    links:
-      - mysql-db
-      - mysql-kc
-      - keycloak-w
-    depends_on:
-      - mysql-db
-      - mysql-kc
-      - keycloak-w
-    ports:
-      - "8081:8081"
-    restart: always
-    volumes:
-      - ./goal-management/webapps:/opt/app
-
 networks:
   keycloak-and-mysql-network:
 
