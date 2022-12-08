@@ -1,13 +1,14 @@
 package com.datauser.goalmanagement.model.goals;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-
+@Builder
 @Entity
 @Table(name = "employee")
 public class Employee implements Serializable {
