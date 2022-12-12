@@ -106,6 +106,5 @@ class UserServiceTest {
         assertThat(savedEmployee).isNotNull();
 
     }
-
 }
 
