@@ -96,10 +96,10 @@ class UserServiceTest {
     @DisplayName("JUnit test for getEmployeeById method")
     @Test
     public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject(){
-        // given
+
         given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
 
-        // when
+
         Employee savedEmployee  = employeeService.findEmployeeById(employee.getId()).get();
 
         // then
