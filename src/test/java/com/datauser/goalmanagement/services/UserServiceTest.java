@@ -76,9 +76,9 @@ class UserServiceTest {
 
         Employee employee1 = Employee.builder()
                 .id(2L)
-                .firstName("Tony")
-                .lastName("Stark")
-                .email("tony@gmail.com")
+                .firstName("Tigran")
+                .lastName("Petrosyan")
+                .email("petrosyan@gmail.com")
                 .build();
 
         given(employeeRepository.findAll()).willReturn(Collections.emptyList());
